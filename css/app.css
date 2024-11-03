@@ -1,0 +1,131 @@
+/* General Styles */
+body {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 144, 203, 1) 0%,
+    rgba(255, 228, 233, 1) 100%
+  );
+  font-family: "Arial", sans-serif; /* Fuente moderna */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Evitar scroll horizontal */
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 2.5rem;
+  margin-top: 1rem;
+}
+#filters {
+  padding: 2em 2em;
+}
+/* Contenedor Principal */
+.contenedor {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+/* animación para la carga de tarjetas que se hace de forma individual ( añadido ) */
+@keyframes slideIn {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.resultados {
+  animation: slideIn 0.5s ease-in-out;
+}
+/* Tarjetas ( añadido ) */
+.card {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 250px; /* Limitar el ancho máximo de la tarjeta */
+  font-size: 1.5rem; /* Tamaño de fuente */
+  font-weight: bold; /* Resaltar la marca */
+  overflow-wrap: break-word; /* Permitir que el texto se divida */
+  word-break: break-word; /* Romper palabras si son demasiado largas */
+  white-space: normal; /* Permitir que el texto se ajuste en varias líneas */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón Ver Más ( añadido ) */
+button {
+  background-color: rgb(251, 144, 203);
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 1rem auto;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background-color: rgba(255, 228, 233, 1);
+  transform: scale(1.05);
+}
+
+/* Efecto de Neon ( añadido ) */
+.neon {
+  color: rgb(197, 27, 121);
+  text-shadow: 0 0 5px rgb(251, 144, 203), 0 0 10px rgb(251, 144, 203),
+    0 0 15px rgba(255, 228, 233, 1);
+}
+
+/* Footer Styles ( añadido ) */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  .contenedor {
+    padding: 1rem;
+  }
+  .card {
+    margin: 0.5rem;
+  }
+}
