@@ -4,16 +4,15 @@ import { resultados, tarjetaCoches } from "./main.js";
  * Añade a resultados toda la información de los coches disponibles.
  * Además, se ha implementado una mejora para que solo muestre los 10 primeros coches
  * y puedan cargarse de 10 en 10.
- * 
+ *
  * @param {Object[]} coches - Listado de los coches disponibles.
  * @returns {void}
  */
 let resultadosMostrados = 0; // Declaración de la variable
 
 export function mostrarResultados(coches) {
-  limpiarResultados(); // Limpiar resultados previos
-
   if (coches.length === 0) {
+    limpiarResultados(); // Limpiar resultados previos si no hay coches
     const mensaje = document.createElement("p");
     mensaje.textContent = "No se encontraron coches con esos filtros.";
     resultados.appendChild(mensaje);
@@ -21,68 +20,77 @@ export function mostrarResultados(coches) {
   }
 
   const cantidadMostrar = 10;
-  const tarjetaCoches = document.createElement("section"); // Crear un nuevo contenedor cada vez
-  tarjetaCoches.style.display = "flex";
-  tarjetaCoches.style.flexDirection = "row";
-  tarjetaCoches.style.flexWrap = "wrap";
-  tarjetaCoches.style.gap = "1em";
-  tarjetaCoches.style.justifyContent = "center";
-  tarjetaCoches.style.padding = "2em 0";
-  
+
+  // Seleccionar la sección existente o crearla si aún no está en el DOM
+  let tarjetaCoches = document.querySelector("#tarjetaCoches");
+  if (!tarjetaCoches) {
+    tarjetaCoches = document.createElement("section");
+    tarjetaCoches.id = "tarjetaCoches";
+    tarjetaCoches.style.display = "flex";
+    tarjetaCoches.style.flexDirection = "row";
+    tarjetaCoches.style.flexWrap = "wrap";
+    tarjetaCoches.style.gap = "1em";
+    tarjetaCoches.style.justifyContent = "center";
+    tarjetaCoches.style.padding = "2em 0";
+    resultados.appendChild(tarjetaCoches); // Agregar al contenedor de resultados solo si no existe
+  }
+
   const fragment = document.createDocumentFragment(); // Crear un fragmento de documento
 
-  coches.slice(0, cantidadMostrar).forEach((coche, index) => {
+  // Mostrar los próximos `cantidadMostrar` coches desde el índice actual de `resultadosMostrados`
+  coches.slice(resultadosMostrados, resultadosMostrados + cantidadMostrar).forEach((coche, index) => {
     const card = crearTarjetaCoche(coche);
 
-    // Calcular el retraso: cada 2 tarjetas tendrán un retraso adicional
-    const delay = Math.floor(index / 1) * 100; // Retraso de 100ms por cada 2 tarjetas
+    // Calcular el retraso: cada tarjeta tendrá un retraso incremental
+    const delay = Math.floor(index / 1) * 100; // Retraso de 100ms por tarjeta
     card.style.animationDelay = `${delay}ms`; // Aplicar el retraso a la tarjeta
 
-    // Añadir la clase de animación
-    card.classList.add("resultados");
-    card.classList.add("card");
+    // Añadir las clases de animación
+    card.classList.add("resultados", "card");
 
     fragment.appendChild(card); // Agregar cada tarjeta al fragmento
   });
 
-  tarjetaCoches.appendChild(fragment); // Añadir el fragmento a la sección
-  resultados.appendChild(tarjetaCoches); // Agregar la sección al contenedor de resultados
+  tarjetaCoches.appendChild(fragment); // Añadir el fragmento a la sección existente
+  resultadosMostrados += cantidadMostrar; // Incrementar el contador de coches mostrados
 
-  // Verificamos si hay más coches que mostrar
-  if (coches.length > cantidadMostrar) {
-    const btnVerMas = document.createElement("button");
-    btnVerMas.textContent = "Ver más";
-    btnVerMas.classList.add(
-      "bg-blue-500",
-      "text-3xl",
-      "text-white",
-      "w-50",
-      "px-4",
-      "py-2",
-      "rounded",
-      "hover:bg-blue-600",
-      "transition-colors",
-      "duration-300",
-      "flex",
-      "flex-row",
-      "flex-wrap",
-      "content-center",
-      "mx-auto",
-      "my-auto"
-    );
-
-    btnVerMas.addEventListener("click", () => {
-      // Llamar a mostrar más resultados, pasando los coches restantes
-      mostrarResultados(coches.slice(tarjetaCoches.children.length)); // Mostrar más resultados
-    });
-
-    resultados.appendChild(btnVerMas); // Agregar botón para ver más coches
+  // Verificar si quedan más coches por mostrar
+  let btnVerMas = document.querySelector("#btnVerMas");
+  if (resultadosMostrados < coches.length) {
+    // Si el botón no existe, crearlo
+    if (!btnVerMas) {
+      btnVerMas = document.createElement("button");
+      btnVerMas.id = "btnVerMas";
+      btnVerMas.textContent = "Ver más";
+      btnVerMas.classList.add(
+        "bg-blue-500",
+        "text-3xl",
+        "text-white",
+        "w-50",
+        "px-4",
+        "py-2",
+        "rounded",
+        "hover:bg-blue-600",
+        "transition-colors",
+        "duration-300",
+        "flex",
+        "flex-row",
+        "flex-wrap",
+        "content-center",
+        "mx-auto",
+        "my-auto"
+      );
+      btnVerMas.addEventListener("click", () => mostrarResultados(coches)); // Llamar a `mostrarResultados` con los coches
+      resultados.appendChild(btnVerMas);
+    }
+  } else if (btnVerMas) {
+    // Si ya no hay más coches para mostrar, eliminar el botón
+    btnVerMas.remove();
   }
 }
-
 /**
  * Función que únicamente limpia todos los resultados de coches.
- * 
+ *
  * @returns {void}
  */
 export function limpiarResultados() {
@@ -93,7 +101,7 @@ export function limpiarResultados() {
 
 /**
  * Crea una tarjeta de coche con la información proporcionada.
- * 
+ *
  * @param {Object} coche - Objeto que contiene los datos del coche.
  * @returns {HTMLElement} - Elemento HTML que representa la tarjeta del coche.
  */
